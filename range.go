@@ -13,3 +13,4 @@ str:="sangeethamathigomathiganesh"
 for i,n:=range str{ 					// range using string
 fmt.Printf("string[%d]:%d\n",i,n)
 }
+}
