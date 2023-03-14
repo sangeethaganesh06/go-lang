@@ -11,6 +11,16 @@ func main() {
      
         fmt.Println("False")
     }
+	m := make(map[string]int)
+
+	// Set key/value pairs using typical `name[key] = val`
+	// syntax.
+	m["k1"] = 7
+	m["k2"] = 13
+
+	// Printing a map with e.g. `fmt.Println` will show all of
+	// its key/value pairs.
+	fmt.Println("map:", m)
     map2 := map[int]string{90: "Dog",91: "Cat",92: "Cow",93: "Bird",94: "Rabbit"} //map[int]{
 	
 	fmt.Println("before update:",map2)
