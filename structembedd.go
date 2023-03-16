@@ -8,7 +8,7 @@ type person struct {
 	phno int
 }
 type employee struct {
-	person
+	person			//person embedded inside the employee
 	dept   string
 	salary int
 	id     int
