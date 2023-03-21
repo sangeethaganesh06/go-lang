@@ -9,7 +9,7 @@ func main() {
 											//chennals with buffer
 	numCh := make(chan int)
 	oddToMerger := make(chan int)
-	evenToMerger := make(chan int, 10) // 10 is Buffer value
+	evenToMerger := make(chan int, 15)                                             //  Buffer value
 	squareToMerger := make(chan int)
 	mergerToPrinter := make(chan int)
 	done := make(chan struct{})
@@ -24,7 +24,7 @@ func main() {
 }
 
 func counter(out chan int) {
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 15; i++ {
 		out <- i
 	}
 	close(out)
@@ -52,7 +52,7 @@ func oddEvenSplitter(in chan int, odd chan int, even chan int) {
 
 func merger(oddIn chan int, evenIn chan int, out chan int) {
 	for {
-		select {
+		select {				//select case
 		case a, ok := <-oddIn:
 			if ok {
 				out <- a
