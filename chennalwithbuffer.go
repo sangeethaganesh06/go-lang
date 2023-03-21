@@ -6,8 +6,7 @@ import (
 )
 
 func main() {
-
-	//channels
+											//chennals with buffer
 	numCh := make(chan int)
 	oddToMerger := make(chan int)
 	evenToMerger := make(chan int, 10) // 10 is Buffer value
@@ -15,13 +14,13 @@ func main() {
 	mergerToPrinter := make(chan int)
 	done := make(chan struct{})
 
-	//GoRoutines
+										//GoRoutines
 	go counter(numCh)
 	go oddEvenSplitter(numCh, oddToMerger, evenToMerger)
 	go squarer(evenToMerger, squareToMerger)
 	go merger(oddToMerger, squareToMerger, mergerToPrinter)
 	go printer(mergerToPrinter, done)
-	<-done
+	<-done			// done receiver
 }
 
 func counter(out chan int) {
@@ -33,7 +32,7 @@ func counter(out chan int) {
 
 func squarer(in chan int, out chan int) {
 	for a := range in {
-		time.Sleep(2 * time.Second)
+		time.Sleep(2 * time.Second)		//delay function
 		out <- a * a
 	}
 	close(out)
@@ -79,5 +78,5 @@ func printer(in chan int, done chan struct{}) {
 	for a := range in {
 		fmt.Println(a)
 	}
-	done <- struct{}{}
+	done <- struct{}{}				//ends the input
 }
