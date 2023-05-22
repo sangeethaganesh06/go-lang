@@ -1,24 +1,24 @@
 /* To create a new database: */
-CREATE DATABASE database_name;
+CREATE DATABASE mathi;
 
 /* Ex : */
-CREATE DATABASE joes;
+CREATE DATABASE sangeetha;
 
 /* To drop(Remove) a database:*/
-DROP DATABASE database_name;
+DROP DATABASE mathi;
 
 /* Ex:*/
-DROP DATABASE joes;
+DROP DATABASE sangeetha;
 
 
 /* To view all databases:*/
 SHOW DATABASES;
 
 /* To select a database:*/
-USE database_name;
+USE mathi;
 
 /*  Ex:*/
-USE joes;
+USE sangeetha;
 
 
 /*  To create a new table:*/
@@ -27,12 +27,9 @@ CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, ag
 
 /*  To view all tables in a database:*/
 SHOW TABLES;
-
 /* To view structure of a table:*/
-DESCRIBE table_name;
-
-Ex:
 DESCRIBE users;
+
 
 /* To add a new column inside a table:*/
 ALTER TABLE users ADD gender VARCHAR(10) NOT NULL AFTER AGE;
@@ -40,13 +37,13 @@ ALTER TABLE users ADD gender VARCHAR(10) NOT NULL AFTER AGE;
 /* To add multiple columns to a table:*/
 ALTER TABLE users ADD city VARCHAR(50) NOT NULL, ADD contact VARCHAR(50) NOT NULL;
 
-/To modify a column in a table:/
+/*To modify a column in a table:*/
 ALTER TABLE users MODIFY contact VARCHAR(25) NOT NULL;
 
-/To rename a table:/
+/*To rename a table:*/
 ALTER TABLE users RENAME TO students;
 
-/To view recoords in a table:/
+/*To view recoords in a table:*/
 SELECT * FROM students;
 
 /* To insert a record into a table:*/
@@ -153,3 +150,102 @@ SELECT emp.name,emp.design,salary.sdate,salray.amt FROM emp LEFT JOIN salary ON 
 
 /* To select with cases:*/
 SELECT name,city,(CASE WHEN city='Salem' THEN 100 WHEN city='Namakkal' THEN 200 WHEN city='Chennai' THEN 300 WHEN city='Hosur' THEN 400 ELSE 0 END) AS amt FROM students;
+
+/*Multiple Inner Join:*/
+SELECT students.name,students.rollno,course.cname,marks.M1,marks.M2,marks.M3 FROM students INNER JOIN course ON students.cid=course.cid INNER JOIN marks ON students.id=marks.id;
+
+
+
+
+/*Simple Dynamic Marklist using Queries:*/
+
+SELECT students.name,students.rollno,
+course.cname as Course,
+marks.M1,marks.M2,marks.M3,
+(marks.M1,marks.M2,marks.M3) AS Total,
+ROUND(((marks.M1,marks.M2,marks.M3)/3),2) AS Average
+CASE
+	WHEN marks.M1 >= 35 AND marks.M2 >= 35 AND marks.M3 >= 35 THEN 'PASS'
+	ELSE 'FAIL'
+END AS Result,
+CASE
+	WHEN marks.M1 >= 35 AND marks.M2 >= 35 AND marks.M3 >= 35 THEN
+		CASE
+			WHEN ROUND(((marks.M1,marks.M2,marks.M3)/3),2) >= 90 AND ROUND(((marks.M1,marks.M2,marks.M3)/3),2) < = 100 THEN 'A'
+			WHEN ROUND(((marks.M1,marks.M2,marks.M3)/3),2) >= 80 AND ROUND(((marks.M1,marks.M2,marks.M3)/3),2) < = 89 THEN 'B'
+			ELSE
+			'C'
+		END
+	ELSE 'NO GRADE'
+END AS Result,
+ FROM students INNER JOIN course ON students.cid=course.cid INNER JOIN marks ON students.id=marks.id;
+ 
+ 
+ 
+/*To use dynamically Created column names:*/
+
+ SELECT students.name,students.rollno,
+course.cname as Course,
+marks.M1,marks.M2,marks.M3,
+(marks.M1,marks.M2,marks.M3) AS Total,
+ROUND(((marks.M1,marks.M2,marks.M3)/3),2) AS Average
+CASE
+	WHEN marks.M1 >= 35 AND marks.M2 >= 35 AND marks.M3 >= 35 THEN 'PASS'
+	ELSE 'FAIL'
+END AS Result,
+CASE
+	WHEN marks.M1 >= 35 AND marks.M2 >= 35 AND marks.M3 >= 35 THEN
+		CASE
+			WHEN ROUND(((marks.M1,marks.M2,marks.M3)/3),2) >= 90 AND ROUND(((marks.M1,marks.M2,marks.M3)/3),2) < = 100 THEN 'A'
+			WHEN ROUND(((marks.M1,marks.M2,marks.M3)/3),2) >= 80 AND ROUND(((marks.M1,marks.M2,marks.M3)/3),2) < = 89 THEN 'B'
+			ELSE
+			'C'
+		END
+	ELSE 'NO GRADE'
+END AS Result,
+ FROM students INNER JOIN course ON students.cid=course.cid INNER JOIN marks ON students.id=marks.id WHERE course.cname='BCA' having Result = 'PASS' AND (Average >= 70 AND Average <= 100);
+ 
+ 
+ 
+/*Creating queries as View:*/
+ 
+CREATE VIEW Reports AS
+SELECT students.name,students.rollno,
+course.cname as Course,
+marks.M1,marks.M2,marks.M3,
+(marks.M1,marks.M2,marks.M3) AS Total,
+ROUND(((marks.M1,marks.M2,marks.M3)/3),2) AS Average
+CASE
+	WHEN marks.M1 >= 35 AND marks.M2 >= 35 AND marks.M3 >= 35 THEN 'PASS'
+	ELSE 'FAIL'
+END AS Result,
+CASE
+	WHEN marks.M1 >= 35 AND marks.M2 >= 35 AND marks.M3 >= 35 THEN
+		CASE
+			WHEN ROUND(((marks.M1,marks.M2,marks.M3)/3),2) >= 90 AND ROUND(((marks.M1,marks.M2,marks.M3)/3),2) < = 100 THEN 'A'
+			WHEN ROUND(((marks.M1,marks.M2,marks.M3)/3),2) >= 80 AND ROUND(((marks.M1,marks.M2,marks.M3)/3),2) < = 89 THEN 'B'
+			ELSE
+			'C'
+		END
+	ELSE 'NO GRADE'
+END AS Result,
+FROM students INNER JOIN course ON students.cid=course.cid INNER JOIN marks ON students.id=marks.id;
+ 
+/*Accessing views like a table:*/
+ SELECT * FROM Reports;
+ SELECT * FROM Reports WHERE Result = 'PASS';
+ 
+ 
+ /*Update table using Inner Join:*/
+ 
+ UPDATE marks INNER JOIN students ON students.id = marks.id SET M1 = 100,M2 = 100,M3 = 100 WHERE students.rollno = 'A1001';
+ 
+ 
+/*Creating Triggers:*/
+CREATE TRIGGER before_products_update
+	BEFORE UPDATE ON product
+	FOR EACH ROW
+BEGIN 
+	INSERT INTO price_logs(pid,price,new_price)
+	VALUES(old.pid,old.rate,new.rate);
+END$$
