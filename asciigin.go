@@ -13,6 +13,7 @@ func main() {
 		data := map[string]interface{}{
 			"lang": "english ",
 			"tag":  "<br>",
+			//kjgytfyunmlojokjounm
 		}
 		c.AsciiJSON(http.StatusOK, data)
 	})
